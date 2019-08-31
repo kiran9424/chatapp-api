@@ -15,12 +15,14 @@ require('dotenv').config();
 const signupRouter = require('./routes/auth');
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
-const followRouter = require('./routes/friends')
+const followRouter = require('./routes/friends');
+const messageRouter = require('./routes/message');
 
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 require('./sockets/streams')(io)
+require('./sockets/private')(io)
 
 
 app.use(cookieParser());
@@ -36,6 +38,7 @@ app.use('/api/chatapp',signupRouter);
 app.use('/api/chatapp',postRouter);
 app.use('/api/chatapp',userRouter);
 app.use('/api/chatapp',followRouter);
+app.use('/api/chatapp',messageRouter);
 const port = process.env.PORT || 3000
 
 server.listen(port,()=>{
